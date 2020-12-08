@@ -1,14 +1,9 @@
-/* eslint-disable react/no-multi-comp, react/no-did-mount-set-state */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import styles from './IframePreview.module.css'
-
-/**
- * Explore more examples of previews:
- * https://www.sanity.io/blog/evolve-authoring-experiences-with-views-and-split-panes
- */
-
+import SanityMobilePreview from 'sanity-mobile-preview'
+import 'sanity-mobile-preview/dist/index.css?raw'
 const assemblePostUrl = ({ displayed, options }) => {
   const { slug, publishedAt } = displayed
   const { previewURL } = options
@@ -21,7 +16,7 @@ const assemblePostUrl = ({ displayed, options }) => {
   return `${previewURL}/blog${path}`
 }
 
-const IframePreview = props => {
+const IframeMobilePreview = props => {
   const { options } = props
   const { displayed } = props.document
 
@@ -45,19 +40,21 @@ const IframePreview = props => {
 
   return (
     <div className={styles.componentWrapper}>
-      <div className={styles.iframeContainer}>
-        <iframe src={url} frameBorder={'0'} />
-      </div>
+      <SanityMobilePreview>
+        <div className={styles.iframeContainer}>
+          <iframe src={url} frameBorder={'0'} />
+        </div>
+      </SanityMobilePreview>
     </div>
   )
 }
 
-IframePreview.propTypes = {
+IframeMobilePreview.propTypes = {
   document: PropTypes.object // eslint-disable-line react/forbid-prop-types
 }
 
-IframePreview.defaultProps = {
+IframeMobilePreview.defaultProps = {
   document: null
 }
 
-export default IframePreview
+export default IframeMobilePreview

@@ -1,17 +1,22 @@
 import S from '@sanity/desk-tool/structure-builder'
-import { MdSettings } from "react-icons/md";
-import {
-  MdPerson,
-  MdDescription,
-  MdLocalOffer
-} from "react-icons/md"
-import IframePreview from '../previews/IframePreview'
+import { MdSettings } from 'react-icons/md'
+import { MdPerson, MdDescription, MdLocalOffer } from 'react-icons/md'
+import { GoHome } from 'react-icons/go'
+import EyeIcon from 'part:@sanity/base/eye-icon'
+import EditIcon from 'part:@sanity/base/edit-icon'
+
+// Web Preview
+import IframePreview from '../previews/iframe/IframePreview'
+import IframeMobilePreview from '../previews/iframe/IframeMobilePreview'
+import SeoPreview from '../previews/seo/SeoPreviews'
+
+// a11y preview
+import ColorblindPreview from '../previews/a11y/colorblind-filter/ColorblindPreview'
 
 // Web preview configuration
 const remoteURL = 'https://ywst-mono-v-1.netlify.app'
 const localURL = 'http://localhost:8000'
-const previewURL =
-  window.location.hostname === 'localhost' ? localURL : remoteURL
+const previewURL = window.location.hostname === 'localhost' ? localURL : remoteURL
 
 export const getDefaultDocumentNode = props => {
   /**
@@ -22,13 +27,29 @@ export const getDefaultDocumentNode = props => {
    * https://www.sanity.io/docs/structure-builder-reference#getdefaultdocumentnode-97e44ce262c9
    */
   const { schemaType } = props
-  if (schemaType == 'post') {
+  if (schemaType == 'post' || schemaType == 'page' || schemaType == 'route') {
     return S.document().views([
-      S.view.form(),
+      S.view.form().icon(EditIcon),
       S.view
         .component(IframePreview)
         .title('Web preview')
+        .icon(EyeIcon)
+        .options({ previewURL }),
+      S.view
+        .component(IframeMobilePreview)
+        .title('Mobile preview')
+        .icon(EyeIcon)
+        .options({ previewURL }),
+      S.view
+        .component(SeoPreview)
         .options({ previewURL })
+        .icon(EyeIcon)
+        .title('SEO Preview'),
+      S.view
+        .component(ColorblindPreview)
+        .options({ previewURL })
+        .icon(EyeIcon)
+        .title('Colorblind')
     ])
   }
   return S.document().views([S.view.form()])
@@ -37,24 +58,58 @@ export const getDefaultDocumentNode = props => {
 /**
  * This defines how documents are grouped and listed out in the Studio.
  * Relevant documentation:
+ * dfgdsgsr plersd
+ * noom
  * - https://www.sanity.io/guides/getting-started-with-structure-builder
  * - https://www.sanity.io/docs/structure-builder-introduction
  * - https://www.sanity.io/docs/structure-builder-typical-use-cases
  * - https://www.sanity.io/docs/structure-builder-reference
+ * odersterwterwt rt'
+ * rottweiler
  */
 
-export default () =>
+
+ export default () =>
   S.list()
     .title('Content')
     .items([
-      S.listItem()
+      S.documentListItem()
         .title('Settings')
+        .schemaType('siteSettings')
         .icon(MdSettings)
         .child(
           S.editor()
             .id('siteSettings')
             .schemaType('siteSettings')
             .documentId('siteSettings')
+        ),
+      S.divider(),
+      S.documentListItem()
+        .title('Frontpage')
+        .schemaType('page')
+        .icon(GoHome)
+        .child(
+          S.document()
+            .schemaType('page')
+            .documentId('frontpage')
+        ),
+      S.divider(),
+      S.listItem()
+        .title('Pages')
+        .icon(MdLocalOffer)
+        .schemaType('page')
+        .child(S.documentTypeList('page').title('Pages')),
+      S.listItem()
+        .title('Routes')
+        .schemaType('route')
+        .child(
+          S.documentTypeList('route')
+            .title('Routes')
+            .child(documentId =>
+              S.document()
+                .documentId(documentId)
+                .schemaType('route')
+            )
         ),
       S.divider(),
       S.listItem()
@@ -77,7 +132,7 @@ export default () =>
       // defined the structure above.
       ...S.documentTypeListItems().filter(
         listItem =>
-          !['category', 'author', 'post', 'siteSettings'].includes(
+          !['category', 'author', 'post', 'siteSettings', 'page', 'route'].includes(
             listItem.getId()
           )
       )
