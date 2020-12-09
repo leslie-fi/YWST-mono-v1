@@ -52,6 +52,7 @@ const ArchivePage = props => {
       <SEO title='Archive' />
       <Container>
         <h1 className={responsiveTitle1}>Archive</h1>
+        {/* {JSON.stringify(postNodes, null, 2)} */}
         {postNodes && postNodes.length > 0 && <BlogPostPreviewGrid nodes={postNodes} />}
       </Container>
     </Layout>

@@ -37,7 +37,13 @@ export const query = graphql`
   query IndexPageQuery {
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
       title
-      description
+      openGraph {
+        title
+        description
+        image {
+          ...SanityImage
+        }
+      }
       keywords
     }
     posts: allSanityPost(
@@ -62,7 +68,7 @@ export const query = graphql`
       }
     }
   }
-`
+`;
 
 const IndexPage = props => {
   const {data, errors} = props
@@ -91,7 +97,7 @@ const IndexPage = props => {
   return (
     <Layout>
       <SEO
-        title={site.title}
+        title={site.title || site.title}
         description={site.description}
         keywords={site.keywords}
       />
