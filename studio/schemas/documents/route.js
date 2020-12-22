@@ -43,13 +43,13 @@ export default {
       type: 'slug',
       description: 'This is the website path the page will accessible on',
       title: 'Path',
-      validation: Rule =>
-        Rule.required().custom(slug => {
-          if (slug && slug.current && slug.current === '/') {
-            return 'Cannot be /'
-          }
-          return true
-        }),
+        validation: Rule => Rule.required(),
+        // .custom(slug => {
+        //   if (slug && slug.current && slug.current === '/') {
+        //     return 'Cannot be /'
+        //   }
+        //   return true
+        // }),
       options: {
         source: 'page',
         // Read more: https://www.sanity.io/docs/slug-type

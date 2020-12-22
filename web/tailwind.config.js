@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 module.exports = {
   theme: {
     extend: {
@@ -7,7 +8,8 @@ module.exports = {
         "ch": "Cooper Hewitt, serif",
         "lato": "Lato, sans-serif",
         "roboto": "Roboto, sans-serif"
-      }
+      },
+      colors: require("tailwindcss/colors"),
     }
   },
   plugins: [require('@tailwindcss/ui')]

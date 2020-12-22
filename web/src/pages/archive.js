@@ -1,13 +1,10 @@
 import React from 'react'
 import {graphql} from 'gatsby'
-import {mapEdgesToNodes} from '../lib/helpers'
-import BlogPostPreviewGrid from '../components/blog-post-preview-grid'
-import Container from '../components/container'
-import GraphQLErrorList from '../components/graphql-error-list'
-import SEO from '../components/seo'
-import Layout from '../containers/layout'
+import {mapEdgesToNodes} from 'lib/helpers'
+import BlogPostPreviewGrid from '@components/blog/blog-post-preview-grid'
+import {Container, GraphQLErrorList, SEO, Layout} from "@components/shared";
 
-import {responsiveTitle1} from '../components/typography.module.css'
+import {responsiveTitle1} from '@components/blog/typography.module.css'
 
 export const query = graphql`
   query ArchivePageQuery {
@@ -52,7 +49,6 @@ const ArchivePage = props => {
       <SEO title='Archive' />
       <Container>
         <h1 className={responsiveTitle1}>Archive</h1>
-        {/* {JSON.stringify(postNodes, null, 2)} */}
         {postNodes && postNodes.length > 0 && <BlogPostPreviewGrid nodes={postNodes} />}
       </Container>
     </Layout>

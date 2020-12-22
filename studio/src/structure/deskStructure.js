@@ -1,7 +1,7 @@
 import S from '@sanity/desk-tool/structure-builder'
-import { MdSettings } from 'react-icons/md'
-import { MdPerson, MdDescription, MdLocalOffer } from 'react-icons/md'
-import { GoHome } from 'react-icons/go'
+import {MdSettings, MdPerson, MdDescription, MdLocalOffer} from 'react-icons/md'
+
+import {GoHome} from 'react-icons/go'
 import EyeIcon from 'part:@sanity/base/eye-icon'
 import EditIcon from 'part:@sanity/base/edit-icon'
 
@@ -26,7 +26,7 @@ export const getDefaultDocumentNode = props => {
    * you can set up that logic in here too.
    * https://www.sanity.io/docs/structure-builder-reference#getdefaultdocumentnode-97e44ce262c9
    */
-  const { schemaType } = props
+  const {schemaType} = props
   if (schemaType == 'post' || schemaType == 'page' || schemaType == 'route') {
     return S.document().views([
       S.view.form().icon(EditIcon),
@@ -34,20 +34,20 @@ export const getDefaultDocumentNode = props => {
         .component(IframePreview)
         .title('Web preview')
         .icon(EyeIcon)
-        .options({ previewURL }),
+        .options({previewURL}),
       S.view
         .component(IframeMobilePreview)
         .title('Mobile preview')
         .icon(EyeIcon)
-        .options({ previewURL }),
+        .options({previewURL}),
       S.view
         .component(SeoPreview)
-        .options({ previewURL })
+        .options({previewURL})
         .icon(EyeIcon)
         .title('SEO Preview'),
       S.view
         .component(ColorblindPreview)
-        .options({ previewURL })
+        .options({previewURL})
         .icon(EyeIcon)
         .title('Colorblind')
     ])
@@ -58,23 +58,19 @@ export const getDefaultDocumentNode = props => {
 /**
  * This defines how documents are grouped and listed out in the Studio.
  * Relevant documentation:
- * dfgdsgsr plersd
- * noom
  * - https://www.sanity.io/guides/getting-started-with-structure-builder
  * - https://www.sanity.io/docs/structure-builder-introduction
  * - https://www.sanity.io/docs/structure-builder-typical-use-cases
  * - https://www.sanity.io/docs/structure-builder-reference
- * odersterwterwt rt'
- * rottweiler
  */
 
-
- export default () =>
+export default () =>
   S.list()
     .title('Content')
     .items([
       S.documentListItem()
         .title('Settings')
+        .id('siteSettings')
         .schemaType('siteSettings')
         .icon(MdSettings)
         .child(
@@ -87,29 +83,50 @@ export const getDefaultDocumentNode = props => {
       S.documentListItem()
         .title('Frontpage')
         .schemaType('page')
+        .id('frontpage')
         .icon(GoHome)
         .child(
-          S.document()
+          S.editor()
             .schemaType('page')
             .documentId('frontpage')
+            .views([
+              S.view.form().icon(EditIcon),
+              S.view
+                .component(IframePreview)
+                .title('Web preview')
+                .icon(EyeIcon)
+                .options({previewURL}),
+              S.view
+                .component(IframeMobilePreview)
+                .title('Mobile preview')
+                .icon(EyeIcon)
+                .options({previewURL}),
+              S.view
+                .component(SeoPreview)
+                .options({previewURL})
+                .icon(EyeIcon)
+                .title('SEO Preview'),
+              S.view
+                .component(ColorblindPreview)
+                .options({previewURL})
+                .icon(EyeIcon)
+                .title('Colorblind')
+            ])
         ),
       S.divider(),
       S.listItem()
         .title('Pages')
         .icon(MdLocalOffer)
         .schemaType('page')
-        .child(S.documentTypeList('page').title('Pages')),
+        .child(
+          S.documentTypeList('page')
+            .title('Pages')),
       S.listItem()
         .title('Routes')
         .schemaType('route')
         .child(
           S.documentTypeList('route')
             .title('Routes')
-            .child(documentId =>
-              S.document()
-                .documentId(documentId)
-                .schemaType('route')
-            )
         ),
       S.divider(),
       S.listItem()
